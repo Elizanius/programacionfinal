@@ -36,19 +36,19 @@ public class PrimaryController {
     private TextField nombre;
 
     @FXML
-    private ChoiceBox<?> zonaatraccion;
+    private ChoiceBox<String> zonaatraccion;
 
     @FXML
-    private ChoiceBox<?> alimentacion;
+    private ChoiceBox<String> alimentacion;
 
     @FXML
     private TableView<?> tabla;
 
     @FXML
-    private ChoiceBox<?> tamaño;
+    private ChoiceBox<String> tamaño;
 
     @FXML
-    private ChoiceBox<?> tipo;
+    private ChoiceBox<String> tipo;
 
     @FXML
     private ResourceBundle resources;
@@ -86,7 +86,9 @@ public class PrimaryController {
     @FXML
     void listardinos() throws IOException {
         App.setRoot("dinopark_listardinos");
-        alimentacion.getItems();
+        alimentacion.getItems().addAll("carnivoro","omnivoro","herbivoro");
+        tamaño.getItems().addAll("peque","mediano","grande");
+        tipo.getItems().addAll("agua","tierra","aire");
     }
 
     @FXML
