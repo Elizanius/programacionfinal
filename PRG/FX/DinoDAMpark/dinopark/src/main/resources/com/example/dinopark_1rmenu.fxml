@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="449.0" prefWidth="669.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
+   <children>
+      <Button fx:id="botoncrear" layoutX="127.0" layoutY="166.0" mnemonicParsing="false" onAction="#crearatraccion" text="CREAR UNA ATRACCIÓN" />
+      <Button fx:id="botonlistardinos" layoutX="135.0" layoutY="242.0" mnemonicParsing="false" onAction="#listardinos" text="LISTAR DINOSAURIOS" />
+      <Button fx:id="botonlistarzonas" layoutX="135.0" layoutY="321.0" mnemonicParsing="false" onAction="#listarzona" text="LISTAR ZONAS" />
+      <Button layoutX="491.0" layoutY="321.0" mnemonicParsing="false" onAction="#salir" text="EXIT" />
+      <Label alignment="CENTER" layoutX="24.0" layoutY="67.0" prefHeight="76.0" prefWidth="364.0" text="DinoDAM Park">
+         <font>
+            <Font size="35.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.9857142857142857" endY="1.0" startX="0.5285714285714286">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.8684210777282715" green="0.05628655105829239" blue="0.05628655105829239" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.03618421033024788" green="0.8684210777282715" blue="0.7158442735671997" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <ImageView fx:id="rex" fitHeight="170.0" fitWidth="253.0" layoutX="388.0" layoutY="117.0">
+         <image>
+            <Image url="@rex.jpeg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

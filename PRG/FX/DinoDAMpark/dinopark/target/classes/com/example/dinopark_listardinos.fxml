@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="487.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
+   <children>
+      <Label layoutX="44.0" layoutY="224.0" text="Alimentación" />
+      <Label layoutX="102.0" layoutY="314.0" text="Tipo" />
+      <Label layoutX="75.0" layoutY="146.0" text="Tamaño" />
+      <ChoiceBox fx:id="tamaño" layoutX="154.0" layoutY="142.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="alimentacion" layoutX="154.0" layoutY="220.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="tipo" layoutX="154.0" layoutY="310.0" prefWidth="150.0" />
+      <TableView fx:id="tabla" layoutX="335.0" layoutY="134.0" prefHeight="263.0" prefWidth="379.0">
+        <columns>
+          <TableColumn prefWidth="100.0" text="Nombre" />
+          <TableColumn prefWidth="77.0" text="Tamaño" />
+            <TableColumn prefWidth="121.0" text="Alimentacion" />
+            <TableColumn text="Tipo" />
+        </columns>
+      </TableView>
+      <Label layoutX="234.0" layoutY="55.0" text="Listar Dinosaurios">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="fondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.eldoritos">
+   <children>
+      <Button fx:id="botonvalidar" layoutX="270.0" layoutY="351.0" mnemonicParsing="false" onAction="#validar" text="Validar" />
+      <Label fx:id="txtcontraseña" alignment="CENTER" contentDisplay="CENTER" layoutX="265.0" layoutY="278.0" text="Contraseña" />
+      <Label fx:id="user" layoutX="277.0" layoutY="219.0" text="Usuario" />
+      <PasswordField fx:id="contraseña" layoutX="217.0" layoutY="294.0" onAction="#intropass" />
+      <TextField fx:id="txtuser" layoutX="217.0" layoutY="235.0" onAction="#introusuario" />
+      <ImageView fx:id="imagen" fitHeight="200.0" fitWidth="195.0" layoutX="203.0" layoutY="14.0">
+         <image>
+            <Image url="@images/transparent-smirking-face-mischievous-orange-funny-fruit-uniqu-mischievous-orange-with-twisted-sly-smile66190aab78c839.17835391.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
