@@ -34,4 +34,32 @@ public class App extends Application {
         launch();
     }
 
+    public static class Dinosaurio {
+    
+        private int id_dino;
+        private String nombre;
+        private String tamanyo;
+        private String alimentacion;
+        private String tipo;
+
+    }
+
+    public static class Atraccion{
+
+        private int id_atraccion;
+        private int id_zona;
+        private int id_dino;
+        private String nombre;
+        private int capacidad;
+        private int edad_minima;
+
+    }
+
+    public static class Zona{
+
+        private int id_zona;
+        private String ubicacion;
+        private String nombre;
+    }
+
 }

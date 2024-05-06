@@ -1,5 +1,8 @@
 package com.example;
 
+import com.example.App.Atraccion;
+import com.example.App.Zona;
+import com.example.App.Dinosaurio;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +18,6 @@ import java.io.IOException;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-
 
 public class PrimaryController {
 
@@ -84,6 +86,7 @@ public class PrimaryController {
     @FXML
     void listardinos() throws IOException {
         App.setRoot("dinopark_listardinos");
+        alimentacion.getItems();
     }
 
     @FXML
@@ -118,7 +121,7 @@ public class PrimaryController {
 
     @FXML
     void listaroeste(ActionEvent event) {
-
+        
     }
 
     @FXML
@@ -132,7 +135,6 @@ public class PrimaryController {
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM JurassicPark",
         ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         rs = stmt.executeQuery();
-            
         assert botoncrear != null : "fx:id=\"botoncrear\" was not injected: check your FXML file 'dinopark_1rmenu.fxml'.";
         assert botonlistardinos != null : "fx:id=\"botonlistardinos\" was not injected: check your FXML file 'dinopark_1rmenu.fxml'.";
         assert botonlistarzonas != null : "fx:id=\"botonlistarzonas\" was not injected: check your FXML file 'dinopark_1rmenu.fxml'.";
@@ -151,6 +153,7 @@ public class PrimaryController {
         assert tabla != null : "fx:id=\"tabla\" was not injected: check your FXML file 'dinopark_listardinos.fxml'.";
         assert tamaño != null : "fx:id=\"tamaño\" was not injected: check your FXML file 'dinopark_listardinos.fxml'.";
         assert tipo != null : "fx:id=\"tipo\" was not injected: check your FXML file 'dinopark_listardinos.fxml'.";
+
     }
 
 }
