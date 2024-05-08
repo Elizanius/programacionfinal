@@ -160,7 +160,6 @@ public class Agenda1 {
             
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM empleados",
             ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            stmt.executeQuery();
             rs = stmt.executeQuery();
             rs.first();
             idtxt.setText(Integer.toString(rs.getInt("IdEmpleado")));

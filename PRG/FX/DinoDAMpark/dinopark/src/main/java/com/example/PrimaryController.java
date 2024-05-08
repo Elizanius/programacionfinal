@@ -118,7 +118,6 @@ public class PrimaryController {
 
     @FXML
     void listarnorte(ActionEvent event) {
-
     }
 
     @FXML
