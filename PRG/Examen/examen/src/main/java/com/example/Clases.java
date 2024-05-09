@@ -44,6 +44,19 @@ public class Clases {
     }
 
     public static class Cuenta{
-        
-    } 
+
+         static String num_cta;
+         static String NIF;
+         static double saldo;
+
+    }
+
+    public static class Cuenta{
+
+        static String num_fra;
+        static String NIF;
+        static int num_habitacion;
+        static double importe;
+
+   }
 }
