@@ -1,5 +1,4 @@
 package com.example;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,10 +7,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * JavaFX App
- */
+import com.example.Clases.Cliente;
 public class App extends Application {
+
+    
+    static Cliente cliente1 = new Cliente("n", "n", "n", "n", "n");
 
     private static Scene scene;
 
