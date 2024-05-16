@@ -1,3 +1,5 @@
+package com.example.Clases;
+
 public class Cliente{
          
     private Double dinero_ingresado;
@@ -13,17 +15,17 @@ public class Cliente{
         this.NIF = NIF;
     }
 
-    public Double getDinero_ingresado() {
+    public Double getDinero_gastado() {
         return dinero_gastado;
     }
-    public void setDinero_ingresado(Double dinero_ingresado) {
+    public void setDinero_ingresado(Double dinero_gastado) {
         this.dinero_gastado = dinero_gastado;
     }
-    public String getApellidos() {
-        return apellidos;
+    public Double getDinero_ingresado() {
+        return dinero_ingresado;
     }
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setApellidos(Double dinero_ingresado) {
+        this.dinero_ingresado = dinero_ingresado;
     }
     public String getClave() {
         return clave;

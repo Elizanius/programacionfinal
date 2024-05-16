@@ -71,12 +71,7 @@ public class PrimaryController {
             stmt.setString(2, pass.getText());
             rs = stmt.executeQuery();
             if (rs.next()) {
-                Cliente cliente = 
-                App.cliente1.setClave(cliente.getClave());
-                App.cliente1.setNombre(cliente.getNombre());
-                App.cliente1.setApellidos(cliente.getApellidos());
-                App.cliente1.setMovil(cliente.getMovil());
-                App.cliente1.setNIF(cliente.getNIF());
+                
                 try {
                     App.setRoot("menugestion");
                 } catch (IOException e) {
@@ -90,8 +85,6 @@ public class PrimaryController {
                 alert.showAndWait();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
