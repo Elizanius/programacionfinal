@@ -10,6 +10,14 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>io.syndesis</groupId>
+            <artifactId>sql-connectors</artifactId>
+            <version>1.3.0-20180202</version>
+            <type>pom</type>
+        </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>

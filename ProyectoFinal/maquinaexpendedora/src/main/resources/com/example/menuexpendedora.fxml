@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="589.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
    <children>
-      <ImageView fitHeight="1138.0" fitWidth="1635.0" layoutX="-945.0" layoutY="-250.0">
+      <ImageView fx:id="imgMaquina" fitHeight="1138.0" fitWidth="1635.0" layoutX="-945.0" layoutY="-250.0">
          <image>
             <Image url="@../../../../../target/images/—Pngtree—vending%20machine%20white%20simple_6854817.png" />
          </image>
       </ImageView>
-      <Button layoutX="60.0" layoutY="55.0" mnemonicParsing="false" prefHeight="176.0" prefWidth="339.0" text="Ver Productos Disponibles" />
-      <Button layoutX="120.0" layoutY="479.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="206.0" text="Salir" />
-      <Button alignment="CENTER" layoutX="461.0" layoutY="101.0" mnemonicParsing="false" prefHeight="152.0" prefWidth="112.0" text="Gestionar" />
-      <Button layoutX="60.0" layoutY="227.0" mnemonicParsing="false" prefHeight="186.0" prefWidth="339.0" text="Comprar Productos" />
+      <Button fx:id="cerrar" layoutX="120.0" layoutY="479.0" mnemonicParsing="false" onAction="#CerrarApp" prefHeight="37.0" prefWidth="206.0" text="Salir" />
+      <Button fx:id="MenuGestion" alignment="CENTER" layoutX="461.0" layoutY="101.0" mnemonicParsing="false" onAction="#CambiarGestion" prefHeight="152.0" prefWidth="112.0" text="Gestionar" />
+      <Button fx:id="botoncomprar" layoutX="60.0" layoutY="315.0" mnemonicParsing="false" onAction="#comprar" prefHeight="98.0" prefWidth="339.0" text="Comprar Productos" />
+      <TableView fx:id="Mostrar_Productos" layoutX="60.0" layoutY="53.0" onSort="#enseñar" prefHeight="266.0" prefWidth="339.0">
+        <columns>
+          <TableColumn fx:id="id_producto_tabla" prefWidth="89.0" text="ID" />
+          <TableColumn fx:id="nombre_producto_tabla" prefWidth="75.0" text="Nombre" />
+            <TableColumn fx:id="stock_producto_maquina" prefWidth="86.0" text="Stock" />
+            <TableColumn fx:id="precioCompra_producto_tabla" prefWidth="88.0" text="Precio" />
+        </columns>
+      </TableView>
+      <TextField layoutX="432.0" layoutY="315.0" />
    </children>
 </AnchorPane>

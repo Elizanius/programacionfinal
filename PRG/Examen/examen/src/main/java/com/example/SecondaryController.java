@@ -44,7 +44,7 @@ public class SecondaryController {
     private Button cerrarboton;
 
     @FXML
-    private ComboBox<Cuenta> showcuentas;
+    private ComboBox<String> showcuentas;
 
     @FXML
     private Button pagarboton;
@@ -72,21 +72,31 @@ public class SecondaryController {
         
     }
 
-    @FXML
+    /*@FXML
     void mostrarcuentas(ActionEvent event) throws SQLException{
     
         List<Cuenta> cuentas = obtenerCuentasPorNIE();
         ObservableList<Cuenta> cuentasObservable = FXCollections.observableArrayList(cuentas);
         showcuentas.setItems(cuentasObservable);
         
+    }*/
+
+    @FXML
+    void mostrarcuentas(ActionEvent event) throws SQLException{
+    
+        List<String> cuentas = obtenerCuentasPorNIE();
+        ObservableList<String> cuentasObservable = FXCollections.observableArrayList(cuentas);
+        showcuentas.setItems(cuentasObservable);
+        
     }
 
-    private static List<Cuenta> obtenerCuentasPorNIE() throws SQLException {
-        List<Cuenta> cuentas = new ArrayList<>();
-        String query = "SELECT * FROM Cuenta WHERE NIE = ?";
+    private static List<String> obtenerCuentasPorNIE() throws SQLException {
+        List<String> cuentas = new ArrayList<>();
+        String query = "SELECT * FROM Cuenta WHERE NIF = ?";
         String NIE = App.cliente1.getNIF();
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/CajeroNOVA","root", "dbrootpass");
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        System.out.println(NIE);
+        try { Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/CajeroNOVA","root", "dbrootpass");
+             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, NIE);
             ResultSet rs = stmt.executeQuery();
 
@@ -94,10 +104,13 @@ public class SecondaryController {
                 Cuenta cuenta = new Cuenta();
                 cuenta.setNIF(rs.getString("NIF"));
                 cuenta.setSaldo(rs.getDouble("saldo"));
-                cuentas.add(cuenta);
+                cuentas.add(rs.getString("num_cta"));
+                System.out.println(cuenta.getNIF() + cuenta.getSaldo() + cuenta.getNum_cta());
             }
+        
+        }catch(Exception e){
+            System.out.println("ERROR");
         }
-
         return cuentas;
     }
 
@@ -107,7 +120,7 @@ public class SecondaryController {
             con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/CajeroNOVA","root", "dbrootpass" );
             stmt = con.prepareStatement("SELECT * FROM Cliente",
             ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
+            mostrarcuentas(null);
         } catch (SQLException e) {
             e.printStackTrace();
         }
