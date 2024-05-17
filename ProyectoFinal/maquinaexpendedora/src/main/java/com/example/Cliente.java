@@ -1,4 +1,4 @@
-package com.example.Clases;
+package com.example;
 
 public class Cliente{
          

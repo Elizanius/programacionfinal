@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import com.example.*;
 import java.io.IOException;
 
 /**
@@ -14,6 +14,8 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+
+    Cliente cliente = new Cliente(0.00, 0.00, "n", "n");
 
     @Override
     public void start(Stage stage) throws IOException {

@@ -90,6 +90,7 @@ public class SecondaryController {
         
     }
 
+    
     private static List<String> obtenerCuentasPorNIE() throws SQLException {
         List<String> cuentas = new ArrayList<>();
         String query = "SELECT * FROM Cuenta WHERE NIF = ?";

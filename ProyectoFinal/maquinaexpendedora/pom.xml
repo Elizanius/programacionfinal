@@ -12,6 +12,13 @@
     <dependencies>
 
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>io.syndesis</groupId>
             <artifactId>sql-connectors</artifactId>
             <version>1.3.0-20180202</version>

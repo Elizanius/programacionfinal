@@ -1,7 +1,17 @@
 package com.example;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -9,19 +19,19 @@ import javafx.scene.control.*;
 public class SecondaryController {
 
     @FXML
-    private TableColumn<?, ?> Id_Tabla_TopVentas;
+    private TableColumn<Producto, Integer> Id_Tabla_TopVentas;
 
     @FXML
-    private TableColumn<?, ?> Nombre_Tabla_TopVentas;
+    private TableColumn<Producto, String> Nombre_Tabla_TopVentas;
 
     @FXML
-    private TableColumn<?, ?> Stock_Tabla_TopVentas;
+    private TableColumn<Producto, Integer> Stock_Tabla_TopVentas;
 
     @FXML
     private TableView<?> TablaTopVentas;
 
     @FXML
-    private TableColumn<?, ?> Ventas_Tabla_TopVentas;
+    private TableColumn<?, Double> Ventas_Tabla_TopVentas;
 
     @FXML
     private Button botonVolverMenuVentas;
@@ -36,7 +46,7 @@ public class SecondaryController {
     private Button botonvolvermenu;
 
     @FXML
-    private ComboBox<?> eleccionProducto;
+    private ComboBox<String> eleccionProducto;
 
     @FXML
     private TextField textGanancias;
@@ -69,12 +79,51 @@ public class SecondaryController {
     private Button botonVolverAlMenuGanancias;
 
     @FXML
-    private ComboBox<?> seleccionProducto;
+    private ComboBox<String> seleccionProducto;
+
+    
+
+
+    private static List<Producto> obtenerProductos() throws SQLException {
+        List<Producto> productos = new ArrayList<>();
+        String query = "SELECT * FROM Productos";
+        try { Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass");
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                double precio_compra = rs.getDouble("precio_compra");
+                double precio_venta = rs.getDouble("precio_venta");
+                Integer stock = rs.getInt("stock");
+
+                productos.add(new Producto(id, nombre, precio_compra,precio_venta, stock));
+
+            }
+        
+        }catch(Exception e){
+            System.out.println("ERROR");
+        }
+        return productos;
+    }
 
     @FXML
-    void mostrarProductos(ActionEvent event) {
-
+    void mostrarProductos(ActionEvent event) throws SQLException {
+        List<Producto> productos = obtenerProductos();
+        List<String> nomproductos = new ArrayList<>();
+        for (int i = 0; i < productos.size(); i++) {
+            nomproductos.add(productos.get(i).getNombre());
+        }
+        ObservableList<String> cuentasObservable = FXCollections.observableArrayList(nomproductos);
+        eleccionProducto.setItems(cuentasObservable);
+        seleccionProducto.setItems(cuentasObservable);
+        
     }
+
+    
+
+
 
     @FXML
     void volvermenugestion(ActionEvent event) {
@@ -137,6 +186,7 @@ public class SecondaryController {
 
     @FXML
     void initialize() {
+        
         assert botonGestionProductos != null : "fx:id=\"botonGestionProductos\" was not injected: check your FXML file 'menugestion.fxml'.";
         assert botonMostrarBeneficios != null : "fx:id=\"botonMostrarBeneficios\" was not injected: check your FXML file 'menugestion.fxml'.";
         assert botonMásVendidos != null : "fx:id=\"botonMásVendidos\" was not injected: check your FXML file 'menugestion.fxml'.";
