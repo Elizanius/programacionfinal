@@ -10,14 +10,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="589.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
    <children>
-      <ImageView fx:id="imgMaquina" fitHeight="1138.0" fitWidth="1635.0" layoutX="-945.0" layoutY="-250.0">
+      <ImageView fx:id="imgMaquina" fitHeight="629.0" fitWidth="607.0" layoutX="-7.0" layoutY="-13.0">
          <image>
-            <Image url="@../../../../../target/images/—Pngtree—vending%20machine%20white%20simple_6854817.png" />
+            <Image url="@../../../../../target/classes/images/—Pngtree—vending%20machine%20white%20simple_6854817.png" />
          </image>
       </ImageView>
-      <Button fx:id="cerrar" layoutX="120.0" layoutY="479.0" mnemonicParsing="false" onAction="#CerrarApp" prefHeight="37.0" prefWidth="206.0" text="Salir" />
-      <Button fx:id="MenuGestion" alignment="CENTER" layoutX="461.0" layoutY="101.0" mnemonicParsing="false" onAction="#CambiarGestion" prefHeight="152.0" prefWidth="112.0" text="Gestionar" />
-      <Button fx:id="botoncomprar" layoutX="60.0" layoutY="315.0" mnemonicParsing="false" onAction="#comprar" prefHeight="98.0" prefWidth="339.0" text="Comprar Productos" />
+      <Button fx:id="cerrar" layoutX="120.0" layoutY="476.0" mnemonicParsing="false" onAction="#CerrarApp" prefHeight="37.0" prefWidth="206.0" text="Salir" />
+      <Button fx:id="MenuGestion" alignment="CENTER" layoutX="462.0" layoutY="98.0" mnemonicParsing="false" onAction="#CambiarGestion" prefHeight="152.0" prefWidth="112.0" text="Gestionar" />
+      <Button fx:id="botoncomprar" layoutX="60.0" layoutY="315.0" mnemonicParsing="false" onAction="#comprar" prefHeight="98.0" prefWidth="339.0" text="Comprar Producto" />
       <TableView fx:id="Mostrar_Productos" layoutX="60.0" layoutY="53.0" onSort="#enseñar" prefHeight="266.0" prefWidth="339.0">
         <columns>
           <TableColumn fx:id="id_producto_tabla" prefWidth="89.0" text="ID" />
@@ -26,6 +26,6 @@
             <TableColumn fx:id="precioCompra_producto_tabla" prefWidth="88.0" text="Precio" />
         </columns>
       </TableView>
-      <TextField layoutX="432.0" layoutY="315.0" />
+      <TextField layoutX="452.0" layoutY="319.0" prefHeight="24.0" prefWidth="131.0" />
    </children>
 </AnchorPane>

@@ -15,11 +15,11 @@ public class App extends Application {
 
     private static Scene scene;
 
-    Cliente cliente = new Cliente(0.00, 0.00, "n", "n");
+    static Cliente Usuario = new Cliente(0.00, 0.00, "n", "n");
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("menuexpendedora"), 600, 590);
+        scene = new Scene(loadFXML("accesoprimario"), 600, 590);
         stage.setScene(scene);
         stage.show();
     }

@@ -3,14 +3,19 @@ package com.example;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import com.example.*;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,6 +28,8 @@ public class PrimaryController {
     private ResultSet rs;
     private PreparedStatement stmt;
     private Connection con;
+    private Producto productoelegido = new Producto(null, null, null, null);
+    private Producto selectedProducto = new Producto(null, null, null, null);
 
     @FXML
     private ResourceBundle resources;
@@ -64,45 +71,54 @@ public class PrimaryController {
     private Button acceso;
 
     @FXML
+    private Label nombrePrincipal;
+    
+    @FXML
     private PasswordField pass;
 
     @FXML
     void iniciar(ActionEvent event) {
         try {
-            
-            stmt = con.prepareStatement("SELECT * FROM Cliente WHERE NIF = ? AND clave = ?");
+            stmt = con.prepareStatement("SELECT * FROM Cliente WHERE NIF = ?");
             stmt.setString(1, User.getText());
-            stmt.setString(2, pass.getText());
             rs = stmt.executeQuery();
             if (rs.next()) {
-                
                 try {
-                    App.setRoot("menugestion");
+                    App.Usuario.setNIF(rs.getString(3));
+                    App.Usuario.setDinero_ingresado(Double.parseDouble(rs.getString(1)));
+                    App.Usuario.setDinero_gastado(Double.parseDouble(rs.getString(2)));
+                    App.Usuario.setClave(rs.getString(4));
+                    App.setRoot("menuexpendedora");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error de login");
-                alert.setHeaderText("Credenciales incorrectas");
-                alert.setContentText("Por favor, verifica tu nombre de usuario y contraseña");
-                alert.showAndWait();
+                Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
+                confirmAlert.setTitle("Error de login");
+                confirmAlert.setHeaderText(null);
+                confirmAlert.setContentText("¿Quieres crear una cuenta con el siguiente NIF?");
+                confirmAlert.showAndWait();
+                Optional<ButtonType> result = confirmAlert.showAndWait();
+
+                    // Manejar la respuesta del usuario
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    stmt = con.prepareStatement("INSERT INTO Cliente (NIF, dinero_gastado, dinero_ingresado) VALUES (?, 150.75, 2000.00);");
+                    stmt.setString(1, User.getText());
+                    rs = stmt.executeQuery();
+                    Alert infoAlert = new Alert(AlertType.INFORMATION);
+                    infoAlert.setTitle("Creado!");
+                    infoAlert.setHeaderText(null);
+                    infoAlert.setContentText("Se a creado correctamente el usuario.");
+                    infoAlert.showAndWait();
+
+                    // Aquí puedes poner el código para manejar la acción de aceptar
+                }
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    @FXML
-    void logpass(ActionEvent event) {
-
-    }
-
-    @FXML
-    void loguser(ActionEvent event) {
-
-    }
-
 
     @FXML
     void CambiarGestion(ActionEvent event) {
@@ -115,16 +131,42 @@ public class PrimaryController {
 
     @FXML
     void CerrarApp(ActionEvent event) {
-        try {
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Platform.exit();
     }
 
     @FXML
     void comprar(ActionEvent event) {
 
+        Mostrar_Productos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                selectedProducto = newValue;
+                productoelegido.setNombre(selectedProducto.getNombre()); 
+                productoelegido.setId(selectedProducto.getId());
+                productoelegido.setStock(selectedProducto.getStock());
+                productoelegido.setPrecio_venta(selectedProducto.getPrecio_venta());
+                
+                try {
+                    stmt = con.prepareStatement("UPDATE Productos\n" + "SET stock = stock-1\n" + "WHERE id_producto = ?;\n" + "");
+                    stmt.setString(1, String.valueOf(productoelegido.getId()));
+                    rs = stmt.executeQuery();
+
+                    stmt = con.prepareStatement("UPDATE Cliente\n" + "SET dinero_gastado = dinero_gastado + ?\n" + "WHERE NIF = ?;\n" + "");
+                    stmt.setString(1, String.valueOf(productoelegido.getPrecio_venta()));
+                    stmt.setString(2, String.valueOf(productoelegido.getPrecio_venta()));
+                    rs = stmt.executeQuery();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Confirmación");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("¿Estás seguro de realizar esta compra?");
+        confirmAlert.showAndWait();
     }
 
     @FXML
@@ -173,7 +215,13 @@ public class PrimaryController {
         id_producto_tabla.setCellValueFactory(new PropertyValueFactory<>("id"));
         nombre_producto_tabla.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         precioCompra_producto_tabla.setCellValueFactory(new PropertyValueFactory<>("precio_venta"));
-        stock_producto_maquina.setCellValueFactory(new PropertyValueFactory<>("stock"));    
+        stock_producto_maquina.setCellValueFactory(new PropertyValueFactory<>("stock"));
+
+        Mostrar_Productos.setEditable(false);
+        nombre_producto_tabla.setEditable(false);
+        id_producto_tabla.setEditable(false);
+        precioCompra_producto_tabla.setEditable(false);
+        stock_producto_maquina.setEditable(false);
 
         assert MenuGestion != null : "fx:id=\"MenuGestion\" was not injected: check your FXML file 'menuexpendedora.fxml'.";
         assert Mostrar_Productos != null : "fx:id=\"Mostrar_Productos\" was not injected: check your FXML file 'menuexpendedora.fxml'.";

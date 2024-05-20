@@ -121,10 +121,6 @@ public class SecondaryController {
         
     }
 
-    
-
-
-
     @FXML
     void volvermenugestion(ActionEvent event) {
         try {

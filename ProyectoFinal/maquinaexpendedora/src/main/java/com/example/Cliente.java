@@ -18,13 +18,13 @@ public class Cliente{
     public Double getDinero_gastado() {
         return dinero_gastado;
     }
-    public void setDinero_ingresado(Double dinero_gastado) {
+    public void setDinero_gastado(Double dinero_gastado) {
         this.dinero_gastado = dinero_gastado;
     }
     public Double getDinero_ingresado() {
         return dinero_ingresado;
     }
-    public void setApellidos(Double dinero_ingresado) {
+    public void setDinero_ingresado(Double dinero_ingresado) {
         this.dinero_ingresado = dinero_ingresado;
     }
     public String getClave() {
