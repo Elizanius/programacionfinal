@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -24,7 +25,9 @@ public class PrimaryController {
     Connection con;
     PreparedStatement stmt;
     
-
+    @FXML
+    private Label nombrePrincipal;
+    
     @FXML
     private void switchToSecondary() throws IOException {
         App.setRoot("accesosecundario");
@@ -92,6 +95,7 @@ public class PrimaryController {
     void initialize() {
         assert User != null : "fx:id=\"User\" was not injected: check your FXML file 'accesoprimario.fxml'.";
         assert acceso != null : "fx:id=\"acceso\" was not injected: check your FXML file 'accesoprimario.fxml'.";
+        assert nombrePrincipal != null : "fx:id=\"nombrePrincipal\" was not injected: check your FXML file 'accesoprimario.fxml'.";
         assert pass != null : "fx:id=\"pass\" was not injected: check your FXML file 'accesoprimario.fxml'.";
 
         try {

@@ -3,6 +3,7 @@ package com.example;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -12,19 +13,25 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
 
 public class MenuController {
 
+    Cliente usuario = new Cliente(App.Usuario.getDinero_ingresado(), App.Usuario.getDinero_gastado(), App.Usuario.getNIF(), App.Usuario.getClave());
     private ResultSet rs;
     private PreparedStatement stmt;
     private Connection con;
     private Producto productoelegido = new Producto(null, null, null, null);
     private Producto selectedProducto = new Producto(null, null, null, null);
+
+    @FXML
+    private TextField dineroingresado;
 
     @FXML
     private ResourceBundle resources;
@@ -78,39 +85,58 @@ public class MenuController {
         }
     }
 
-    @FXML
+     @FXML
     void comprar(ActionEvent event) {
 
-        Mostrar_Productos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                selectedProducto = newValue;
-                productoelegido.setNombre(selectedProducto.getNombre()); 
-                productoelegido.setId(selectedProducto.getId());
-                productoelegido.setStock(selectedProducto.getStock());
-                productoelegido.setPrecio_venta(selectedProducto.getPrecio_venta());
-                
-                try {
-                    stmt = con.prepareStatement("UPDATE Productos\n" + "SET stock = stock-1\n" + "WHERE id_producto = ?;\n" + "");
-                    stmt.setString(1, String.valueOf(productoelegido.getId()));
-                    rs = stmt.executeQuery();
-
-                    stmt = con.prepareStatement("UPDATE Cliente\n" + "SET dinero_gastado = dinero_gastado + ?\n" + "WHERE NIF = ?;\n" + "");
-                    stmt.setString(1, String.valueOf(productoelegido.getPrecio_venta()));
-                    stmt.setString(2, String.valueOf(productoelegido.getPrecio_venta()));
-                    rs = stmt.executeQuery();
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        usuario.setDinero_ingresado(usuario.getDinero_ingresado()+Integer.parseInt(dineroingresado.getText()) );
+        if (selectedProducto == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No hay producto seleccionado");
+            alert.setContentText("Por favor, selecciona un producto antes de comprar.");
+            alert.showAndWait();
+            return;
+        }
 
         Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
         confirmAlert.setTitle("Confirmación");
-        confirmAlert.setHeaderText(null);
+        confirmAlert.setHeaderText(productoelegido.getNombre());
         confirmAlert.setContentText("¿Estás seguro de realizar esta compra?");
-        confirmAlert.showAndWait();
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try (PreparedStatement stmt1 = con.prepareStatement("UPDATE Productos SET stock = stock - 1 WHERE id_producto = ?")) {
+                stmt1.setInt(1, productoelegido.getId());
+                int rowsAffected1 = stmt1.executeUpdate();
+
+                if (rowsAffected1 > 0) {
+                    try (PreparedStatement stmt2 = con.prepareStatement("UPDATE Cliente SET dinero_gastado = dinero_gastado + ? WHERE NIF = ?")) {
+                        stmt2.setDouble(1, productoelegido.getPrecio_venta());
+                        stmt2.setString(2, usuario.getNIF());
+                        int rowsAffected2 = stmt2.executeUpdate();
+
+                        if (rowsAffected2 > 0) {
+                            Alert infoAlert = new Alert(AlertType.INFORMATION);
+                            infoAlert.setTitle("Compra realizada");
+                            infoAlert.setHeaderText(null);
+                            infoAlert.setContentText("La compra se ha realizado con éxito.");
+                            infoAlert.showAndWait();
+                        } else {
+                            throw new SQLException("Error al actualizar el dinero gastado del cliente.");
+                        }
+                    }
+                } else {
+                    throw new SQLException("Error al actualizar el stock del producto.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Alert errorAlert = new Alert(AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Error en la compra");
+                errorAlert.setContentText("Ocurrió un error al realizar la compra. Inténtalo de nuevo.");
+                errorAlert.showAndWait();
+            }
+        }
     }
 
     @FXML

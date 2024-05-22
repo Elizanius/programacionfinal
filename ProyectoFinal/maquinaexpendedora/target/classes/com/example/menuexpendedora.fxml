@@ -26,6 +26,6 @@
             <TableColumn fx:id="precioCompra_producto_tabla" prefWidth="88.0" text="Precio" />
         </columns>
       </TableView>
-      <TextField layoutX="452.0" layoutY="319.0" prefHeight="24.0" prefWidth="131.0" />
+      <TextField fx:id="dineroingresado" alignment="CENTER" layoutX="452.0" layoutY="319.0" prefHeight="24.0" prefWidth="131.0" promptText="Ingrese su dinero" />
    </children>
 </AnchorPane>
