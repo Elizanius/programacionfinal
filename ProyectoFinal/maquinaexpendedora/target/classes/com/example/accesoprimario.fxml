@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="415.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="600.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
    <children>
-      <Label fx:id="nombrePrincipal" alignment="CENTER" layoutY="37.0" prefHeight="68.0" prefWidth="415.0" text="24H IES LA SENIA" textFill="WHITE">
+      <Label fx:id="nombrePrincipal" alignment="CENTER" layoutY="37.0" prefHeight="109.0" prefWidth="600.0" text="24H IES LA SENIA" textFill="WHITE">
          <font>
             <Font name="System Italic" size="30.0" />
          </font>
       </Label>
-      <PasswordField fx:id="pass" layoutY="243.0" prefHeight="40.0" prefWidth="415.0" promptText="Clave de acceso" style="-fx-background-color: rgb(2,1,17);" />
-      <TextField fx:id="User" layoutY="184.0" prefHeight="40.0" prefWidth="415.0" promptText="NIF o NIE" style="-fx-background-color: rgb(2,1,17);" />
-      <Button fx:id="acceso" layoutY="354.0" mnemonicParsing="false" onAction="#iniciar" prefHeight="40.0" prefWidth="415.0" style="-fx-background-color: rgb(2,1,17);" text="Iniciar Sesión" textFill="#a8a4a4" />
+      <PasswordField fx:id="pass" alignment="CENTER" layoutY="243.0" prefHeight="40.0" prefWidth="600.0" promptText="Clave de acceso" style="-fx-background-color: rgb(2,1,17);" />
+      <TextField fx:id="User" alignment="CENTER" layoutY="184.0" prefHeight="40.0" prefWidth="600.0" promptText="NIF o NIE" style="-fx-background-color: rgb(2,1,17);" />
+      <Button fx:id="acceso" layoutY="442.0" mnemonicParsing="false" onAction="#iniciar" prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: rgb(2,1,17);" text="Iniciar Sesión" textFill="#a8a4a4" />
    </children>
 </AnchorPane>
