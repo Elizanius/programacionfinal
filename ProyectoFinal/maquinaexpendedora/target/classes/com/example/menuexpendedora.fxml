@@ -12,7 +12,7 @@
    <children>
       <ImageView fx:id="imgMaquina" fitHeight="629.0" fitWidth="607.0" layoutX="-7.0" layoutY="-13.0">
          <image>
-            <Image url="@../../../../../target/classes/images/—Pngtree—vending%20machine%20white%20simple_6854817.png" />
+            <Image url="@../../images/—Pngtree—vending%20machine%20white%20simple_6854817.png" />
          </image>
       </ImageView>
       <Button fx:id="cerrar" layoutX="120.0" layoutY="476.0" mnemonicParsing="false" onAction="#CerrarApp" prefHeight="37.0" prefWidth="206.0" text="Salir" />

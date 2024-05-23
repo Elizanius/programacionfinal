@@ -34,7 +34,7 @@ public class TopVentasController {
     private TableView<Producto> TablaTopVentas;
 
     @FXML
-    private TableColumn<Producto, Double> Ventas_Tabla_TopVentas;
+    private TableColumn<Producto, Integer> Ventas_Tabla_TopVentas;
 
     @FXML
     private Button botonVolverMenuVentas;

@@ -98,7 +98,7 @@ void comprar(ActionEvent event) {
         }
         
         String dineroIngresadoText = dineroingresado.getText();
-        double dineroIngresadoExistente = App.Usuario.getDinero_ingresado();
+        double dineroIngresadoExistente = usuario.getDinero_ingresado();
         if (dineroIngresadoText == null || dineroIngresadoText.trim().isEmpty()) {
             if (dineroIngresadoExistente < selectedProducto.getPrecio_venta()) {
                 Alert errorAlert = new Alert(AlertType.ERROR);
@@ -156,7 +156,7 @@ void comprar(ActionEvent event) {
         if (diferencia > 0) {
             usuario.setDinero_ingresado(diferencia);
         } else {
-            usuario.setDinero_ingresado(0.0);
+            usuario.setDinero_ingresado(usuario.getDinero_ingresado());
         }
 
         // Actualizar el stock del producto
@@ -196,8 +196,8 @@ void comprar(ActionEvent event) {
         // Refrescar la TableView para que se muestren los cambios
         Mostrar_Productos.refresh();
 
-        PreparedStatement stmt = con.prepareStatement("UPDATE Cliente SET dinero_gastado = dinero_gastado + ? WHERE NIF = ?");
-        stmt.setDouble(1, selectedProducto.getPrecio_venta());
+        PreparedStatement stmt = con.prepareStatement("UPDATE Cliente SET dinero_gastado = ? WHERE NIF = ?");
+        stmt.setDouble(1, usuario.getDinero_gastado());
         stmt.setString(2, usuario.getNIF());
 
     } catch (Exception e) {

@@ -17,24 +17,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class SecondaryController {
-
-    @FXML
-    private TableColumn<Producto, Integer> Id_Tabla_TopVentas;
-
-    @FXML
-    private TableColumn<Producto, String> Nombre_Tabla_TopVentas;
-
-    @FXML
-    private TableColumn<Producto, Integer> Stock_Tabla_TopVentas;
-
-    @FXML
-    private TableView<?> TablaTopVentas;
-
-    @FXML
-    private TableColumn<?, Double> Ventas_Tabla_TopVentas;
-
-    @FXML
-    private Button botonVolverMenuVentas;
     
     @FXML
     private ResourceBundle resources;
