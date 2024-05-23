@@ -1,11 +1,11 @@
 package com.example;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +27,6 @@ public class MenuController {
     private ResultSet rs;
     private PreparedStatement stmt;
     private Connection con;
-    private Producto productoelegido = new Producto(null, null, null, null);
     private Producto selectedProducto = new Producto(null, null, null, null);
 
     @FXML
@@ -85,10 +84,10 @@ public class MenuController {
         }
     }
 
-     @FXML
-    void comprar(ActionEvent event) {
-
-        usuario.setDinero_ingresado(usuario.getDinero_ingresado()+Integer.parseInt(dineroingresado.getText()) );
+    @FXML
+void comprar(ActionEvent event) {
+    try {
+        selectedProducto = Mostrar_Productos.getSelectionModel().getSelectedItem();
         if (selectedProducto == null) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
@@ -97,47 +96,120 @@ public class MenuController {
             alert.showAndWait();
             return;
         }
+        
+        String dineroIngresadoText = dineroingresado.getText();
+        double dineroIngresadoExistente = App.Usuario.getDinero_ingresado();
+        if (dineroIngresadoText == null || dineroIngresadoText.trim().isEmpty()) {
+            if (dineroIngresadoExistente < selectedProducto.getPrecio_venta()) {
+                Alert errorAlert = new Alert(AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Dinero insuficiente");
+                errorAlert.setContentText("No hay suficiente dinero para comprar este producto.");
+                errorAlert.showAndWait();
+                return;
+            }
+        } else {
+            double dineroIngresado;
+            try {
+                dineroIngresado = Double.parseDouble(dineroIngresadoText);
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Cantidad de dinero inválida");
+                alert.setContentText("Por favor, ingresa una cantidad válida de dinero.");
+                alert.showAndWait();
+                return;
+            }
+            if (dineroIngresado + dineroIngresadoExistente < selectedProducto.getPrecio_venta()) {
+                Alert errorAlert = new Alert(AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Dinero insuficiente");
+                errorAlert.setContentText("El dinero ingresado es insuficiente para comprar este producto.");
+                errorAlert.showAndWait();
+                return;
+            }
+        }
 
+        // Guardar el dinero ingresado en la tabla Cliente
+        try {
+            PreparedStatement stmt = con.prepareStatement("UPDATE Cliente SET dinero_ingresado = ? WHERE NIF = ?");
+            stmt.setDouble(1, usuario.getDinero_ingresado());
+            stmt.setString(2, usuario.getNIF());
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected <= 0) {
+                throw new SQLException("Error al actualizar el dinero ingresado del cliente.");
+            }
+        } catch (SQLException ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error SQL");
+            alert.setContentText("Ocurrió un error al actualizar el dinero ingresado del cliente: " + ex.getMessage());
+            alert.showAndWait();
+            return;
+        }
+        
+
+        double diferencia = (dineroIngresadoText == null || dineroIngresadoText.trim().isEmpty()) ? 
+        dineroIngresadoExistente - selectedProducto.getPrecio_venta() : 
+        Double.parseDouble(dineroIngresadoText) - selectedProducto.getPrecio_venta();
+        usuario.setDinero_gastado(usuario.getDinero_gastado() + selectedProducto.getPrecio_venta());
+        if (diferencia > 0) {
+            usuario.setDinero_ingresado(diferencia);
+        } else {
+            usuario.setDinero_ingresado(0.0);
+        }
+
+        // Actualizar el stock del producto
+        selectedProducto.setStock(selectedProducto.getStock() - 1);
+        PreparedStatement stmt1 = con.prepareStatement("UPDATE Productos SET stock = ? WHERE id = ?");
+        stmt1.setInt(1, selectedProducto.getStock());
+        stmt1.setInt(2, selectedProducto.getId());
+        int rowsAffected1 = stmt1.executeUpdate();
+
+        if (rowsAffected1 <= 0) {
+            throw new SQLException("Error al actualizar el stock del producto.");
+        }
+
+        // Confirmar la compra
         Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
         confirmAlert.setTitle("Confirmación");
-        confirmAlert.setHeaderText(productoelegido.getNombre());
+        confirmAlert.setHeaderText(selectedProducto.getNombre());
         confirmAlert.setContentText("¿Estás seguro de realizar esta compra?");
         Optional<ButtonType> result = confirmAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            try (PreparedStatement stmt1 = con.prepareStatement("UPDATE Productos SET stock = stock - 1 WHERE id_producto = ?")) {
-                stmt1.setInt(1, productoelegido.getId());
-                int rowsAffected1 = stmt1.executeUpdate();
-
-                if (rowsAffected1 > 0) {
-                    try (PreparedStatement stmt2 = con.prepareStatement("UPDATE Cliente SET dinero_gastado = dinero_gastado + ? WHERE NIF = ?")) {
-                        stmt2.setDouble(1, productoelegido.getPrecio_venta());
-                        stmt2.setString(2, usuario.getNIF());
-                        int rowsAffected2 = stmt2.executeUpdate();
-
-                        if (rowsAffected2 > 0) {
-                            Alert infoAlert = new Alert(AlertType.INFORMATION);
-                            infoAlert.setTitle("Compra realizada");
-                            infoAlert.setHeaderText(null);
-                            infoAlert.setContentText("La compra se ha realizado con éxito.");
-                            infoAlert.showAndWait();
-                        } else {
-                            throw new SQLException("Error al actualizar el dinero gastado del cliente.");
-                        }
-                    }
-                } else {
-                    throw new SQLException("Error al actualizar el stock del producto.");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                Alert errorAlert = new Alert(AlertType.ERROR);
-                errorAlert.setTitle("Error");
-                errorAlert.setHeaderText("Error en la compra");
-                errorAlert.setContentText("Ocurrió un error al realizar la compra. Inténtalo de nuevo.");
-                errorAlert.showAndWait();
+            Alert infoAlert2 = new Alert(AlertType.INFORMATION);
+            infoAlert2.setTitle("Gracias");
+            infoAlert2.setContentText("¡Gracias por tu compra!");
+            infoAlert2.showAndWait();
+        }
+        
+        ObservableList<Producto> listaProductos = Mostrar_Productos.getItems();
+        for (Producto producto : listaProductos) {
+            if (producto.getId() == selectedProducto.getId()) {
+                producto.setStock(selectedProducto.getStock());
+                break;
             }
         }
+        
+
+        // Refrescar la TableView para que se muestren los cambios
+        Mostrar_Productos.refresh();
+
+        PreparedStatement stmt = con.prepareStatement("UPDATE Cliente SET dinero_gastado = dinero_gastado + ? WHERE NIF = ?");
+        stmt.setDouble(1, selectedProducto.getPrecio_venta());
+        stmt.setString(2, usuario.getNIF());
+
+    } catch (Exception e) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error inesperado");
+        alert.setContentText("Ocurrió un error inesperado: " + e.getMessage());
+        alert.showAndWait();
     }
+}
+    
+    
 
     @FXML
     void enseñar(ActionEvent event) {
@@ -148,9 +220,10 @@ public class MenuController {
         ObservableList<Producto> productos = FXCollections.observableArrayList();
         String query = "SELECT * FROM Productos";
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass" );
+        try {
+             Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass" );
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -161,18 +234,18 @@ public class MenuController {
 
                 productos.add(new Producto(id, nombre, stock, precio_venta));
             }
-
+            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         return productos;
     }
 
     @FXML
     void initialize() {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass" );
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass" );
             java.sql.PreparedStatement stmt = con.prepareStatement("SELECT * FROM Productos",
             ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             

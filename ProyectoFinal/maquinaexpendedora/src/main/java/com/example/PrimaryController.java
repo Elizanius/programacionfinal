@@ -51,34 +51,54 @@ public class PrimaryController {
                             e.printStackTrace();
                         }
                     } else {
-                        Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
-                        confirmAlert.setTitle("Error de login");
-                        confirmAlert.setHeaderText(null);
-                        confirmAlert.setContentText("¿Quieres crear una cuenta con el siguiente NIF?");
-                        Optional<ButtonType> result = confirmAlert.showAndWait();
-
-                        if (result.isPresent() && result.get() == ButtonType.OK) {
-                            try (PreparedStatement insertStmt = con.prepareStatement("INSERT INTO Cliente (NIF, dinero_gastado, dinero_ingresado, clave) VALUES (?, 0.0, 0.0, ?)")) {
-                                insertStmt.setString(1, User.getText());
-                                insertStmt.setString(2, pass.getText());
-                                int rowsAffected = insertStmt.executeUpdate();
-
-                                if (rowsAffected > 0) {
-                                    Alert infoAlert = new Alert(AlertType.INFORMATION);
-                                    infoAlert.setTitle("Creado!");
-                                    infoAlert.setHeaderText(null);
-                                    infoAlert.setContentText("Se ha creado correctamente el usuario.");
-                                    infoAlert.showAndWait();
-                                }
-                            }
+                        if (User.getText() == null || User.getText().trim().isEmpty()) {
+                            
+                            Alert errorAlert = new Alert(AlertType.ERROR);
+                            errorAlert.setTitle("ERROR");
+                            errorAlert.setHeaderText("Error de creación");
+                            errorAlert.setContentText("No se puede crear una cuenta con estas credenciales.");
+                            errorAlert.showAndWait();
+                        
                         }
+                        if (pass.getText() == null || pass.getText().trim().isEmpty()) {
+                            
+                            Alert errorAlert = new Alert(AlertType.ERROR);
+                            errorAlert.setTitle("ERROR");
+                            errorAlert.setHeaderText("Error de creación");
+                            errorAlert.setContentText("No se puede crear una cuenta con estas credenciales.");
+                            errorAlert.showAndWait();
+                        
+                        }
+                        if (User.getText() != null && !User.getText().trim().isEmpty() && pass.getText() != null  && !pass.getText().trim().isEmpty()){
+                            Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
+                            confirmAlert.setTitle("Error de login");
+                            confirmAlert.setHeaderText("No hay ninguna cuenta con estas credenciales");
+                            confirmAlert.setContentText("¿Quieres crear una cuenta con el siguiente NIF?");
+                            Optional<ButtonType> result = confirmAlert.showAndWait();
+
+                            if (result.isPresent() && result.get() == ButtonType.OK) {
+                                try (PreparedStatement insertStmt = con.prepareStatement("INSERT INTO Cliente (NIF, dinero_gastado, dinero_ingresado, clave) VALUES (?, 0.0, 0.0, ?)")) {
+                                    insertStmt.setString(1, User.getText());
+                                    insertStmt.setString(2, pass.getText());
+                                    int rowsAffected = insertStmt.executeUpdate();
+
+                                    if (rowsAffected > 0) {
+                                        Alert infoAlert = new Alert(AlertType.INFORMATION);
+                                        infoAlert.setTitle("Creado!");
+                                        infoAlert.setHeaderText(null);
+                                        infoAlert.setContentText("Se ha creado correctamente el usuario.");
+                                        infoAlert.showAndWait();
+                                    }
+                                }
+                            }   
+                        }
+                        
                     }
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } catch (NumberFormatException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
