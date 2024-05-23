@@ -9,19 +9,19 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="600.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.SecondaryController">
    <children>
-      <Label alignment="CENTER" layoutX="124.0" layoutY="41.0" prefHeight="55.0" prefWidth="353.0" style="-fx-background-color: GREY;" text="GESTIÓN ADMINISTRADOR" textFill="WHITE">
+      <ImageView fitHeight="493.0" fitWidth="600.0" layoutX="1.0">
+         <image>
+            <Image url="@../../images/—Pngtree—wavy%20dark%20line%20background_1166455.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="124.0" layoutY="55.0" prefHeight="55.0" prefWidth="353.0" style="-fx-background-color: GREY;" text="GESTIÓN ADMINISTRADOR" textFill="WHITE">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <ImageView fitHeight="502.0" fitWidth="609.0" layoutX="-4.0" layoutY="-3.0">
-         <image>
-            <Image url="@../../images/fondo.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="botonGestionProductos" layoutX="211.0" layoutY="116.0" mnemonicParsing="false" onAction="#CambiarEscenaGestiónProductos" prefHeight="55.0" prefWidth="178.0" text="Gestión de productos" />
-      <Button fx:id="botonMásVendidos" layoutX="211.0" layoutY="219.0" mnemonicParsing="false" onAction="#CambiarScenaProductosMásVendidos" prefHeight="55.0" prefWidth="178.0" text="Productos más vendidos" />
-      <Button fx:id="botonMostrarBeneficios" layoutX="211.0" layoutY="336.0" mnemonicParsing="false" onAction="#CambiarScenaBeneficios" prefHeight="55.0" prefWidth="178.0" text="Mostrar Beneficios" />
+      <Button fx:id="botonGestionProductos" layoutX="205.0" layoutY="158.0" mnemonicParsing="false" onAction="#CambiarEscenaGestiónProductos" prefHeight="55.0" prefWidth="178.0" text="Gestión de productos" />
+      <Button fx:id="botonMásVendidos" layoutX="211.0" layoutY="253.0" mnemonicParsing="false" onAction="#CambiarScenaProductosMásVendidos" prefHeight="55.0" prefWidth="178.0" text="Productos más vendidos" />
+      <Button fx:id="botonMostrarBeneficios" layoutX="205.0" layoutY="351.0" mnemonicParsing="false" onAction="#CambiarScenaBeneficios" prefHeight="55.0" prefWidth="178.0" text="Mostrar Beneficios" />
       <Button fx:id="botonvolver" layoutX="495.0" layoutY="431.0" mnemonicParsing="false" onAction="#volvermenu" prefHeight="19.0" prefWidth="85.0" text="Volver" />
    </children>
 </AnchorPane>
