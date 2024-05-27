@@ -159,17 +159,6 @@ void comprar(ActionEvent event) {
             usuario.setDinero_ingresado(usuario.getDinero_ingresado());
         }
 
-        // Actualizar el stock del producto
-        selectedProducto.setStock(selectedProducto.getStock() - 1);
-        PreparedStatement stmt1 = con.prepareStatement("UPDATE Productos SET stock = ? WHERE id = ?");
-        stmt1.setInt(1, selectedProducto.getStock());
-        stmt1.setInt(2, selectedProducto.getId());
-        int rowsAffected1 = stmt1.executeUpdate();
-
-        if (rowsAffected1 <= 0) {
-            throw new SQLException("Error al actualizar el stock del producto.");
-        }
-
         // Confirmar la compra
         Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
         confirmAlert.setTitle("Confirmación");
@@ -178,11 +167,22 @@ void comprar(ActionEvent event) {
         Optional<ButtonType> result = confirmAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            selectedProducto.setStock(selectedProducto.getStock() - 1);
+            PreparedStatement stmt1 = con.prepareStatement("UPDATE Productos SET stock = ? WHERE id = ?");
+            stmt1.setInt(1, selectedProducto.getStock());
+            stmt1.setInt(2, selectedProducto.getId());
+            int rowsAffected1 = stmt1.executeUpdate();
+
+            if (rowsAffected1 <= 0) {
+                throw new SQLException("Error al actualizar el stock del producto.");
+            }
+
             Alert infoAlert2 = new Alert(AlertType.INFORMATION);
             infoAlert2.setTitle("Gracias");
             infoAlert2.setContentText("¡Gracias por tu compra!");
             infoAlert2.showAndWait();
         }
+        
         
         ObservableList<Producto> listaProductos = Mostrar_Productos.getItems();
         for (Producto producto : listaProductos) {

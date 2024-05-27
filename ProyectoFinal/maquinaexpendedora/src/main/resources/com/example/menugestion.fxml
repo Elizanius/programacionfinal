@@ -20,8 +20,8 @@
          </font>
       </Label>
       <Button fx:id="botonGestionProductos" layoutX="205.0" layoutY="158.0" mnemonicParsing="false" onAction="#CambiarEscenaGestiónProductos" prefHeight="55.0" prefWidth="178.0" text="Gestión de productos" />
-      <Button fx:id="botonMásVendidos" layoutX="211.0" layoutY="253.0" mnemonicParsing="false" onAction="#CambiarScenaProductosMásVendidos" prefHeight="55.0" prefWidth="178.0" text="Productos más vendidos" />
-      <Button fx:id="botonMostrarBeneficios" layoutX="205.0" layoutY="351.0" mnemonicParsing="false" onAction="#CambiarScenaBeneficios" prefHeight="55.0" prefWidth="178.0" text="Mostrar Beneficios" />
+      <Button fx:id="botonMásVendidos" layoutX="205.0" layoutY="247.0" mnemonicParsing="false" onAction="#CambiarScenaProductosMásVendidos" prefHeight="55.0" prefWidth="178.0" text="Productos más vendidos" />
+      <Button fx:id="botonMostrarBeneficios" layoutX="205.0" layoutY="332.0" mnemonicParsing="false" onAction="#CambiarScenaBeneficios" prefHeight="55.0" prefWidth="178.0" text="Mostrar Beneficios" />
       <Button fx:id="botonvolver" layoutX="495.0" layoutY="431.0" mnemonicParsing="false" onAction="#volvermenu" prefHeight="19.0" prefWidth="85.0" text="Volver" />
    </children>
 </AnchorPane>

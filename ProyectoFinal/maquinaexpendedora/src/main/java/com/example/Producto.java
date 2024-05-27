@@ -26,7 +26,7 @@ public class Producto {
     }
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -75,5 +75,8 @@ public class Producto {
         this.stock = stock;
     }
 
-
+    public String toString(Producto producto) {
+        return producto.getNombre(); // Mostrar solo el nombre de la persona
+    }
+            
 }

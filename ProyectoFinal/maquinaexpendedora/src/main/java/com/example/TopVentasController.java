@@ -1,16 +1,10 @@
 package com.example;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -50,7 +44,7 @@ public class TopVentasController {
 
     public static ObservableList<Producto> getProductos() {
         ObservableList<Producto> productos = FXCollections.observableArrayList();
-        String query = "SELECT * FROM Productos ORDER BY stock ASC";
+        String query = "SELECT * FROM Productos";
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass" );
              Statement stmt = conn.createStatement();
@@ -77,7 +71,7 @@ public class TopVentasController {
         
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass" );
-            java.sql.PreparedStatement stmt = con.prepareStatement("SELECT * FROM Productos ORDER BY stock DESC",
+            java.sql.PreparedStatement stmt = con.prepareStatement("SELECT * FROM Productos",
             ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             
                 rs = stmt.executeQuery();

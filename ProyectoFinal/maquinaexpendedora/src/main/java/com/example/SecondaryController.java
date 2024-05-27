@@ -139,7 +139,7 @@ public class SecondaryController {
         try {
             App.setRoot("beneficios");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error cargando beneficios");
         }
     }
 
