@@ -165,6 +165,7 @@ void comprar(ActionEvent event) {
         confirmAlert.setHeaderText(selectedProducto.getNombre());
         confirmAlert.setContentText("¿Estás seguro de realizar esta compra?");
         Optional<ButtonType> result = confirmAlert.showAndWait();
+        dineroingresado.setText("0");
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             selectedProducto.setStock(selectedProducto.getStock() - 1);
@@ -181,6 +182,11 @@ void comprar(ActionEvent event) {
             infoAlert2.setTitle("Gracias");
             infoAlert2.setContentText("¡Gracias por tu compra!");
             infoAlert2.showAndWait();
+
+            stmt1 = con.prepareStatement("INSERT INTO Ventas (idProducto, NIF) VALUES (?, ?);");
+            stmt1.setInt(1, selectedProducto.getId());
+            stmt1.setString(2, usuario.getNIF());
+            stmt1.executeUpdate();
         }
         
         

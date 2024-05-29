@@ -4,11 +4,18 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="588.0" prefWidth="600.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.StockActualController">
    <children>
+      <ImageView fitHeight="588.0" fitWidth="600.0" layoutX="1.0">
+         <image>
+            <Image url="@../../../../src/main/resources/images/—Pngtree—wavy%20dark%20line%20background_1166455.png" />
+         </image>
+      </ImageView>
       <Button fx:id="botonvolvermenu" layoutX="218.0" layoutY="525.0" mnemonicParsing="false" onAction="#volvermenugestion" prefHeight="33.0" prefWidth="165.0" text="Volver al menú" />
       <ComboBox fx:id="eleccionProducto" layoutX="321.0" layoutY="55.0" onAction="#mostrarProductos" prefWidth="150.0" promptText="Producto" />
       <Label layoutX="98.0" layoutY="54.0" text="Elige el producto:" textFill="WHITE">

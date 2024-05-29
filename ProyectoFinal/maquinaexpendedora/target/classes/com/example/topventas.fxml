@@ -4,12 +4,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="600.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.TopVentasController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="600.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.TopVentasController">
    <children>
-      <TableView fx:id="TablaTopVentas" layoutY="101.0" prefHeight="330.0" prefWidth="600.0">
+      <ImageView fitHeight="590.0" fitWidth="600.0">
+         <image>
+            <Image url="@../../../../src/main/resources/images/—Pngtree—wavy%20dark%20line%20background_1166455.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="TablaTopVentas" layoutY="101.0" prefHeight="371.0" prefWidth="600.0">
         <columns>
           <TableColumn fx:id="Id_Tabla_TopVentas" prefWidth="70.0" text="ID" />
           <TableColumn fx:id="Nombre_Tabla_TopVentas" prefWidth="165.0" text="Nombre" />
@@ -17,8 +24,8 @@
             <TableColumn fx:id="Ventas_Tabla_TopVentas" prefWidth="204.0" text="Ventas" />
         </columns>
       </TableView>
-      <Button fx:id="botonVolverMenuVentas" layoutX="242.0" layoutY="468.0" mnemonicParsing="false" onAction="#volvermenugestion" text="Volver al menú" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="134.0" layoutY="14.0" prefHeight="76.0" prefWidth="333.0" text="TOP VENTAS" textFill="WHITE">
+      <Button fx:id="botonVolverMenuVentas" layoutX="242.0" layoutY="513.0" mnemonicParsing="false" onAction="#volvermenugestion" text="Volver al menú" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="142.0" layoutY="14.0" prefHeight="76.0" prefWidth="333.0" text="TOP VENTAS" textFill="WHITE">
          <font>
             <Font size="33.0" />
          </font>

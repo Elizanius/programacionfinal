@@ -17,11 +17,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.util.StringConverter;
 
 public class BeneficiosController {
-    private PreparedStatement stmt;
+    Cliente usuario = new Cliente(App.Usuario.getDinero_ingresado(), App.Usuario.getDinero_gastado(), App.Usuario.getNIF(), App.Usuario.getClave());
     private ResultSet rs;
+    private PreparedStatement stmt;
+    private Connection con;
 
     static List<Producto> listaproductos = new ArrayList<>();
 
@@ -60,8 +61,7 @@ public class BeneficiosController {
                 listaproductos.add(new Producto(id, nombre, precio_compra,precio_venta, stock));
                 listanombres.add(nombre);
             }
-            System.out.println("Productos cargados");
-        
+            
         }catch(Exception e){
             System.out.println("ERROR");
         }
@@ -71,7 +71,27 @@ public class BeneficiosController {
 
     @FXML
     void mostrarProductos(ActionEvent event) {
+    
+        try {
+               
+            String query = "SELECT SUM(p.precio_venta) AS GananciasTotales " +
+                           "FROM Ventas v " +
+                           "JOIN Productos p ON v.idProducto = p.id;";
+            stmt = con.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = stmt.executeQuery();
 
+            if (rs.next()) {
+                GananciasTotales.setText(rs.getString("GananciasTotales"));
+
+            }
+            
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("Primer error");
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -86,14 +106,24 @@ public class BeneficiosController {
     @FXML
     void initialize() {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass" );
-            stmt = con.prepareStatement("SELECT * FROM Productos",
-            ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            
+               
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora", "root", "dbrootpass");
+            String query = "SELECT SUM(p.precio_venta) AS GananciasTotales " +
+                           "FROM Ventas v " +
+                           "JOIN Productos p ON v.idProducto = p.id;";
+            stmt = con.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = stmt.executeQuery();
-            System.out.println("Cargando beneficios");
+
+            if (rs.next()) {
+                GananciasTotales.setText(rs.getString("GananciasTotales"));
+            }
+            
+            rs.close();
+            stmt.close();
+            con.close();
         } catch (SQLException e) {
             System.out.println("Primer error");
+            e.printStackTrace();
         }
 
         assert GananciasEspecificas != null : "fx:id=\"GananciasEspecificas\" was not injected: check your FXML file 'beneficios.fxml'.";
@@ -104,22 +134,10 @@ public class BeneficiosController {
 
         
         try {
-            System.out.println("Obteniendo productos");
             List<String> nombres = obtenerProductos();
             ObservableList<String> productos2 = FXCollections.observableArrayList(nombres);
             seleccionProducto.setItems(productos2);
 
-            /*seleccionProducto.setConverter(new StringConverter<Producto>() {
-                @Override
-                public String toString(Producto producto) {
-                    return producto.getNombre(); // Mostrar solo el nombre del Producto
-                }
-            
-                @Override
-                public Producto fromString(String string) {
-                    return null; 
-                }
-            });*/    
         } catch (SQLException e) {
         System.out.println("ERROR");        
         }

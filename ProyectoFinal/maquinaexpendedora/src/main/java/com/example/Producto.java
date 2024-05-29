@@ -6,6 +6,7 @@ public class Producto {
     private Double precio_compra;
     private Double precio_venta;
     private Integer stock;
+    private Integer ventas;
     
 
     public Producto(Integer id,String nombre,Double precio_compra, Double precio_venta, Integer stock){
@@ -30,6 +31,13 @@ public class Producto {
         return id;
     }
 
+    public Integer getVentas() {
+        return ventas;
+    }
+
+    public void setVentas(Integer ventas) {
+        this.ventas = ventas;
+    }
 
     public void setId(int id) {
         this.id = id;
