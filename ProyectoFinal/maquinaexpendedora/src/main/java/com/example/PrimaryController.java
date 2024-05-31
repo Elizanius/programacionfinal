@@ -77,7 +77,8 @@ public class PrimaryController {
                             Optional<ButtonType> result = confirmAlert.showAndWait();
 
                             if (result.isPresent() && result.get() == ButtonType.OK) {
-                                try (PreparedStatement insertStmt = con.prepareStatement("INSERT INTO Cliente (NIF, dinero_gastado, dinero_ingresado, clave) VALUES (?, 0.0, 0.0, ?)")) {
+                                try{ 
+                                    PreparedStatement insertStmt = con.prepareStatement("INSERT INTO Cliente (NIF, dinero_gastado, dinero_ingresado, clave) VALUES (?, 0.0, 0.0, ?)"); 
                                     insertStmt.setString(1, User.getText());
                                     insertStmt.setString(2, pass.getText());
                                     int rowsAffected = insertStmt.executeUpdate();
@@ -89,6 +90,12 @@ public class PrimaryController {
                                         infoAlert.setContentText("Se ha creado correctamente el usuario.");
                                         infoAlert.showAndWait();
                                     }
+                                }catch(SQLException e){ 
+                                    Alert errorAlert = new Alert(AlertType.ERROR);
+                                    errorAlert.setTitle("ERROR");
+                                    errorAlert.setHeaderText("Error de creación");
+                                    errorAlert.setContentText("Ya hay una cuenta con este NIF.");
+                                    errorAlert.showAndWait();
                                 }
                             }   
                         }

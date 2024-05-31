@@ -6,8 +6,16 @@ public class Producto {
     private Double precio_compra;
     private Double precio_venta;
     private Integer stock;
-    private Integer ventas;
+    private Integer total_ventas;
     
+    public Producto(Integer id,String nombre,Double precio_compra, Double precio_venta, Integer stock, Integer total_ventas){
+        this.id = id;
+        this.nombre = nombre;
+        this.precio_compra = precio_compra;
+        this.precio_venta = precio_venta;
+        this.stock = stock;
+        this.total_ventas = total_ventas;
+    }
 
     public Producto(Integer id,String nombre,Double precio_compra, Double precio_venta, Integer stock){
         this.id = id;
@@ -32,11 +40,11 @@ public class Producto {
     }
 
     public Integer getVentas() {
-        return ventas;
+        return total_ventas;
     }
 
-    public void setVentas(Integer ventas) {
-        this.ventas = ventas;
+    public void setVentas(Integer total_ventas) {
+        this.total_ventas = total_ventas;
     }
 
     public void setId(int id) {

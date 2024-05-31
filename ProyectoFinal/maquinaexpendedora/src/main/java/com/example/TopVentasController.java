@@ -52,20 +52,11 @@ public class TopVentasController {
 
     public static ObservableList<Producto> getProductos() {
         ObservableList<Producto> productos = FXCollections.observableArrayList();
-        String query = "SELECT p.*, COALESCE(v.total_ventas, 0) AS total_ventas\n" + //
-                        "FROM Productos p\n" + //
-                        "LEFT JOIN (\n" + //
-                        "    SELECT idProducto, COUNT(*) AS total_ventas\n" + //
-                        "    FROM Ventas\n" + //
-                        "    GROUP BY idProducto\n" + //
-                        ") v ON p.id = v.idProducto\n" + //
-                        "ORDER BY COALESCE(v.total_ventas, 0) DESC;\n" + //
-                        "";
 
         try {
         Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora", "root", "dbrootpass");  
 
-        query = "SELECT p.*, COALESCE(v.total_ventas, 0) AS total_ventas " +
+        String query = "SELECT p.*, COALESCE(v.total_ventas, 0) AS total_ventas " +
                 "FROM Productos p " +
                 "LEFT JOIN (SELECT idProducto, COUNT(*) AS total_ventas FROM Ventas GROUP BY idProducto) v " +
                 "ON p.id = v.idProducto " +
@@ -73,12 +64,13 @@ public class TopVentasController {
 
         PreparedStatement stmt = con.prepareStatement(query);
         ResultSet rs = stmt.executeQuery();
+        
         while (rs.next()) {
           Producto producto = new Producto();
           producto.setId(rs.getInt("id"));
           producto.setNombre(rs.getString("nombre"));
           producto.setStock(rs.getInt("stock"));
-          producto.setVentas(rs.getInt("total_ventas")); 
+          producto.setVentas(rs.getInt("ventas")); 
           productos.add(producto);
         }
         rs.close();
@@ -101,11 +93,11 @@ public class TopVentasController {
         
         Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora", "root", "dbrootpass");  
 
-        String query = "SELECT p.*, COALESCE(v.total_ventas, 0) AS total_ventas " +
+        String query = "SELECT p.*, COALESCE(v.ventas, 0) AS ventas " +
                      "FROM Productos p " +
-                     "LEFT JOIN (SELECT idProducto, COUNT(*) AS total_ventas FROM Ventas GROUP BY idProducto) v " +
+                     "LEFT JOIN (SELECT idProducto, COUNT(*) AS ventas FROM Ventas GROUP BY idProducto) v " +
                      "ON p.id = v.idProducto " +
-                     "ORDER BY COALESCE(v.total_ventas, 0) DESC";   
+                     "ORDER BY COALESCE(v.ventas, 0) DESC";   
         
         PreparedStatement stmt = con.prepareStatement(query);
         
@@ -119,7 +111,7 @@ public class TopVentasController {
     Id_Tabla_TopVentas.setCellValueFactory(new PropertyValueFactory<>("id"));
     Nombre_Tabla_TopVentas.setCellValueFactory(new PropertyValueFactory<>("nombre"));
     Stock_Tabla_TopVentas.setCellValueFactory(new PropertyValueFactory<>("stock"));
-    Ventas_Tabla_TopVentas.setCellValueFactory(new PropertyValueFactory<>("total_ventas"));
+    Ventas_Tabla_TopVentas.setCellValueFactory(new PropertyValueFactory<>("ventas"));
 
     TablaTopVentas.setEditable(false);
     Nombre_Tabla_TopVentas.setEditable(false);

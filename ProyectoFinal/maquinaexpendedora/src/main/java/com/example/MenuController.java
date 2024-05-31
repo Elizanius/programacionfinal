@@ -132,7 +132,7 @@ void comprar(ActionEvent event) {
 
         // Guardar el dinero ingresado en la tabla Cliente
         try {
-            PreparedStatement stmt = con.prepareStatement("UPDATE Cliente SET dinero_ingresado = ? WHERE NIF = ?");
+            PreparedStatement stmt = con.prepareStatement("UPDATE Cliente SET dinero_ingresado = dinero_ingresado + ? WHERE NIF = ?");
             stmt.setDouble(1, usuario.getDinero_ingresado());
             stmt.setString(2, usuario.getNIF());
             int rowsAffected = stmt.executeUpdate();
@@ -153,6 +153,7 @@ void comprar(ActionEvent event) {
         dineroIngresadoExistente - selectedProducto.getPrecio_venta() : 
         Double.parseDouble(dineroIngresadoText) - selectedProducto.getPrecio_venta();
         usuario.setDinero_gastado(usuario.getDinero_gastado() + selectedProducto.getPrecio_venta());
+
         if (diferencia > 0) {
             usuario.setDinero_ingresado(diferencia);
         } else {
@@ -166,8 +167,8 @@ void comprar(ActionEvent event) {
         confirmAlert.setContentText("¿Estás seguro de realizar esta compra?");
         Optional<ButtonType> result = confirmAlert.showAndWait();
         dineroingresado.setText("0");
-
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        
+        if (result.isPresent() && selectedProducto.getStock() > 0 && result.get() == ButtonType.OK) {
             selectedProducto.setStock(selectedProducto.getStock() - 1);
             PreparedStatement stmt1 = con.prepareStatement("UPDATE Productos SET stock = ? WHERE id = ?");
             stmt1.setInt(1, selectedProducto.getStock());
@@ -187,6 +188,11 @@ void comprar(ActionEvent event) {
             stmt1.setInt(1, selectedProducto.getId());
             stmt1.setString(2, usuario.getNIF());
             stmt1.executeUpdate();
+        }else{
+            Alert infoAlert2 = new Alert(AlertType.ERROR);
+            infoAlert2.setTitle("No Stock");
+            infoAlert2.setContentText("No hay stock, no se puede realizar la compra");
+            infoAlert2.showAndWait();
         }
         
         
@@ -250,6 +256,17 @@ void comprar(ActionEvent event) {
 
     @FXML
     void initialize() {
+        
+        usuario = new Cliente(App.Usuario.getDinero_ingresado(), App.Usuario.getDinero_gastado(), App.Usuario.getNIF(), App.Usuario.getClave());
+        
+        System.out.println(usuario.getNIF());
+
+        if (!usuario.getNIF().equals("1") ) {
+            MenuGestion.setDisable(true);
+        }else if (usuario.getNIF().equals("1")){
+            MenuGestion.setDisable(false);
+        }
+
         try {
             con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:33006/MaquinaExpendedora","root", "dbrootpass" );
             java.sql.PreparedStatement stmt = con.prepareStatement("SELECT * FROM Productos",
@@ -259,6 +276,7 @@ void comprar(ActionEvent event) {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        
 
         Mostrar_Productos.setItems(MenuController.getProductos());
         id_producto_tabla.setCellValueFactory(new PropertyValueFactory<>("id"));

@@ -23,6 +23,7 @@ public class BeneficiosController {
     private ResultSet rs;
     private PreparedStatement stmt;
     private Connection con;
+    private String productoseleccionado;
 
     static List<Producto> listaproductos = new ArrayList<>();
 
@@ -72,22 +73,27 @@ public class BeneficiosController {
     @FXML
     void mostrarProductos(ActionEvent event) {
     
-        try {
-               
+        productoseleccionado = seleccionProducto.getValue();
+
+        for (int i = 0; i < listaproductos.size(); i++) {
+            
+            if (productoseleccionado = listaproductos.get(i).getNombre()) {
+                
+            }
+        }
+        try { 
             String query = "SELECT SUM(p.precio_venta) AS GananciasTotales " +
                            "FROM Ventas v " +
-                           "JOIN Productos p ON v.idProducto = p.id;";
-            stmt = con.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                           "JOIN Productos p ON v.idProducto = p.id" +
+                           "INNER JOIN Productos where p.id = ?;";
+            stmt = con.prepareStatement(query);
+            stmt.setString(1, seleccionProducto.getValue());
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                GananciasTotales.setText(rs.getString("GananciasTotales"));
-
+                GananciasEspecificas.setText(rs.getString(1));
             }
             
-            rs.close();
-            stmt.close();
-            con.close();
         } catch (SQLException e) {
             System.out.println("Primer error");
             e.printStackTrace();
@@ -118,9 +124,6 @@ public class BeneficiosController {
                 GananciasTotales.setText(rs.getString("GananciasTotales"));
             }
             
-            rs.close();
-            stmt.close();
-            con.close();
         } catch (SQLException e) {
             System.out.println("Primer error");
             e.printStackTrace();
