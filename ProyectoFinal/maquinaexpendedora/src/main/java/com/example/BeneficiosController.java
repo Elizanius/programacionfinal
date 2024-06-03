@@ -72,22 +72,24 @@ public class BeneficiosController {
 
     @FXML
     void mostrarProductos(ActionEvent event) {
-    
+        Integer idproducto = 0;
         productoseleccionado = seleccionProducto.getValue();
 
         for (int i = 0; i < listaproductos.size(); i++) {
             
-            if (productoseleccionado = listaproductos.get(i).getNombre()) {
-                
+            if (productoseleccionado.equals(listaproductos.get(i).getNombre())) {
+                idproducto = listaproductos.get(i).getId();
             }
         }
+
+        String strIdProducto = Integer.toString(idproducto);
         try { 
             String query = "SELECT SUM(p.precio_venta) AS GananciasTotales " +
                            "FROM Ventas v " +
                            "JOIN Productos p ON v.idProducto = p.id" +
                            "INNER JOIN Productos where p.id = ?;";
             stmt = con.prepareStatement(query);
-            stmt.setString(1, seleccionProducto.getValue());
+            stmt.setString(1, strIdProducto);
             rs = stmt.executeQuery();
 
             if (rs.next()) {

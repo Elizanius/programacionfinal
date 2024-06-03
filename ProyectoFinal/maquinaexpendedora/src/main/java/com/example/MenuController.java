@@ -133,7 +133,7 @@ void comprar(ActionEvent event) {
         // Guardar el dinero ingresado en la tabla Cliente
         try {
             PreparedStatement stmt = con.prepareStatement("UPDATE Cliente SET dinero_ingresado = dinero_ingresado + ? WHERE NIF = ?");
-            stmt.setDouble(1, usuario.getDinero_ingresado());
+            stmt.setDouble(1, Double.parseDouble(dineroIngresadoText));
             stmt.setString(2, usuario.getNIF());
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected <= 0) {
@@ -149,16 +149,7 @@ void comprar(ActionEvent event) {
         }
         
 
-        double diferencia = (dineroIngresadoText == null || dineroIngresadoText.trim().isEmpty()) ? 
-        dineroIngresadoExistente - selectedProducto.getPrecio_venta() : 
-        Double.parseDouble(dineroIngresadoText) - selectedProducto.getPrecio_venta();
-        usuario.setDinero_gastado(usuario.getDinero_gastado() + selectedProducto.getPrecio_venta());
-
-        if (diferencia > 0) {
-            usuario.setDinero_ingresado(diferencia);
-        } else {
-            usuario.setDinero_ingresado(usuario.getDinero_ingresado());
-        }
+        double diferencia = dineroIngresadoExistente - selectedProducto.getPrecio_venta();
 
         // Confirmar la compra
         Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
@@ -183,6 +174,26 @@ void comprar(ActionEvent event) {
             infoAlert2.setTitle("Gracias");
             infoAlert2.setContentText("¡Gracias por tu compra!");
             infoAlert2.showAndWait();
+
+            try {
+                PreparedStatement stmt = con.prepareStatement("UPDATE Cliente SET dinero_ingresado = dinero_ingresado - ? WHERE NIF = ?");
+                stmt.setDouble(1, diferencia);
+                stmt.setString(2, usuario.getNIF());
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected <= 0) {
+                    throw new SQLException("Error al actualizar el dinero ingresado del cliente.");
+                }
+
+            } catch (SQLException e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error SQL");
+                alert.setContentText("Ocurrió un error al actualizar el dinero ingresado del cliente: ");
+                alert.showAndWait();
+                return;            
+            }
+            
 
             stmt1 = con.prepareStatement("INSERT INTO Ventas (idProducto, NIF) VALUES (?, ?);");
             stmt1.setInt(1, selectedProducto.getId());
